@@ -29,6 +29,18 @@ ADD https://raw.githubusercontent.com/crops/extsdk-container/master/restrict_use
 COPY distro-entry.sh poky-entry.py poky-launch.sh /usr/bin/
 COPY sudoers.usersetup /etc/
 
+# alav additions to upstream image
+RUN wget https://storage.googleapis.com/git-repo-downloads/repo -O /usr/bin/repo && \
+    chmod a+x /usr/bin/repo && \
+    apt update && \
+    apt install -y \
+        vim \
+        tig \
+        python3-git \
+        zstd \
+        pigz && \
+    apt clean
+
 # For ubuntu, do not use dash.
 RUN which dash &> /dev/null && (\
     echo "dash dash/sh boolean false" | debconf-set-selections && \
